@@ -21,18 +21,6 @@ require('./controllers/posts.js')(app)
 require('./data/reddit-db')
 
 //Routes
-
-app.get('/', (req, res) => {
-    Post.find({}).lean()
-        .then(posts => {
-            res.render('posts-index', { posts });
-        })
-        .catch(err => {
-            console.log(err.message);
-        })
-})
-
-
 app.get('/posts/new', (req, res) => {
     res.render('posts-new')
 })
