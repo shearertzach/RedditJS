@@ -21,9 +21,6 @@ require('./controllers/posts.js')(app)
 require('./data/reddit-db')
 
 //Routes
-app.get('/posts/new', (req, res) => {
-    res.render('posts-new')
-})
 
 
 
