@@ -6,8 +6,10 @@ const url = "mongodb://localhost/reddit-db"
 mongoose.Promise = global.Promise
 mongoose.connect(
     url,
-    { useNewUrlParser: true },
-    function(err, db) {
+    {
+        useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false,
+    },
+    function(db, err) {
         assert.equal(null, err)
         console.log('Connected Successfully to Database')
     }
