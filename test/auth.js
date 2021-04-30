@@ -9,6 +9,11 @@ const agent = chai.request.agent(server);
 
 const User = require("../models/user");
 
+const testUser = {
+    username: 'testone',
+    password: 'password'
+}
+
 describe("User", function () {
 
     it("should not be able to login if they have not registered", function (done) {
@@ -24,7 +29,6 @@ describe("User", function () {
                 .post("/sign-up")
                 .send({ username: "testone", password: "password" })
                 .end(function (err, res) {
-                    console.log(res.body);
                     res.should.have.status(200);
                     agent.should.have.cookie("nToken");
                     done();
@@ -36,7 +40,7 @@ describe("User", function () {
     it("should be able to login", function (done) {
         agent
             .post("/login")
-            .send({ username: "testone", password: "password" })
+            .send(testUser)
             .end(function (err, res) {
                 res.should.have.status(200);
                 agent.should.have.cookie("nToken");
@@ -56,6 +60,15 @@ describe("User", function () {
 });
 
 after(function () {
-    agent.close()
+    User.findOneAndDelete({
+        username: testUser.username
+    })
+        .then(function (res) {
+            agent.close()
+            done()
+        })
+        .catch(function (err) {
+            done(err);
+        });
 });
 
