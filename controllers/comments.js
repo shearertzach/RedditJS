@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const User = require('../models/user')
 
 module.exports = function (app) {
 
@@ -8,17 +9,27 @@ module.exports = function (app) {
         // INSTANTIATE INSTANCE OF MODEL
         const comment = new Comment(req.body);
 
+        comment.author = req.user._id
+        
+
         // SAVE INSTANCE OF Comment MODEL TO DB
         comment
             .save()
             .then(comment => {
-                return Post.findById(req.params.postId);
+                return Post.findById(req.params.postId)
             })
             .then(post => {
                 post.comments.unshift(comment);
-                return post.save();
+                return post.save()
             })
-            .then(post => {
+            .then(() => {
+                return User.findById(req.user._id)
+            })
+            .then(user => {
+                user.comments.unshift(comment)
+                return user.save()
+            })
+            .then(() => {
                 res.redirect(`/`);
             })
             .catch(err => {

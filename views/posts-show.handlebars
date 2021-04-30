@@ -23,6 +23,7 @@
     <div class="col-sm-6 col-sm-offset-3">
         {{#each post.comments}}
         <p>{{this.content}}</p>
+        <p class="text-right">{{this.author.username}}</p>
         {{/each}}
     </div>
 </div>
