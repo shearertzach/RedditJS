@@ -15,7 +15,7 @@ module.exports = (app) => {
         user
             .save()
             .then(user => {
-                var token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "60 days" });
+                var token = jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "15m" });
                 res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
                 res.redirect('/');
             })

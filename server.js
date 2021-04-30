@@ -32,17 +32,18 @@ var checkAuth = (req, res, next) => {
         var token = req.cookies.nToken;
         var decodedToken = jwt.decode(token, { complete: true }) || {};
         req.user = decodedToken.payload;
+        console.log(req.user)
     }
 
     next();
 };
 app.use(checkAuth);
 
+require('./data/reddit-db')
+
 require('./controllers/posts.js')(app)
 require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
-
-require('./data/reddit-db')
 
 
 
