@@ -48,7 +48,7 @@ module.exports = (app) => {
                         return res.status(401).send({ message: "Wrong Username or password" });
                     }
                     // Create a token
-                    const token = jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "60 days" });
+                    const token = jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "15m" });
                     // Set a cookie and redirect to root
                     res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
                     res.redirect("/");
