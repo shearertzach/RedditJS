@@ -10,7 +10,6 @@ mongoose.connect(
         useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false,
     },
     function(db, err) {
-        assert.equal(null, err)
         console.log('Connected Successfully to Database')
     }
 )
