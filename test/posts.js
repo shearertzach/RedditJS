@@ -12,8 +12,9 @@ const server = require('../server');
 chai.should();
 chai.use(chaiHttp);
 
+const agent = chai.request.agent(server);
+
 describe('Posts', function () {
-    const agent = chai.request.agent(server);
     // Post that we'll use for testing purposes
     const newPost = {
         title: 'post title',
@@ -55,4 +56,8 @@ describe('Posts', function () {
     after(function () {
         Post.findOneAndDelete(newPost);
     });
+});
+
+after(function () {
+    agent.close()
 });
