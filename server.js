@@ -16,6 +16,8 @@ const exphbs = require('express-handlebars')
 
 app.use(cookieParser());
 
+app.use(express.static(__dirname + '/public'));
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
@@ -43,6 +45,7 @@ require('./data/reddit-db')
 require('./controllers/posts.js')(app)
 require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
+require('./controllers/replies.js')(app);
 
 
 

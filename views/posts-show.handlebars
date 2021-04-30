@@ -20,10 +20,9 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="col-sm-6 col-sm-offset-3 comments-main">
         {{#each post.comments}}
-        <p>{{this.content}}</p>
-        <p class="text-right">{{this.author.username}}</p>
+        {{> comment comment=this postId=../post._id}}
         {{/each}}
     </div>
 </div>

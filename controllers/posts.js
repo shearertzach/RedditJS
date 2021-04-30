@@ -7,21 +7,21 @@ module.exports = app => {
         if (req.user) {
             var post = new Post(req.body);
             post.author = req.user._id
-            
-            post
-            .save()
-            .then(post => {
-                return User.findById(req.user._id)
-            })
-            .then(user => {
-                user.posts.unshift(post)
-                user.save()
 
-                res.redirect(`/posts/${post._id}`)
-            })
-            .catch(err => {
-                console.log(err.message)
-            })
+            post
+                .save()
+                .then(post => {
+                    return User.findById(req.user._id)
+                })
+                .then(user => {
+                    user.posts.unshift(post)
+                    user.save()
+
+                    res.redirect(`/posts/${post._id}`)
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
         } else {
             return res.sendStatus(401); // UNAUTHORIZED
         }
@@ -49,20 +49,22 @@ module.exports = app => {
 
     // SHOW
     app.get("/posts/:id", function (req, res) {
-        let currentUser = req.user
-        // LOOK UP THE POST
-        Post.findById(req.params.id).lean()
-        .then((post) => {
-            res.render('posts-show', { post, currentUser })
-        }).catch((err) => {
-            console.log(err.message)
-        })
+        var currentUser = req.user;
+        Post.findById(req.params.id).populate('comments').lean()
+            .then(post => {
+                res.render("posts-show", { post, currentUser });
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
     });
 
+    // SUBREDDIT
     app.get("/n/:subreddit", function (req, res) {
+        var currentUser = req.user;
         Post.find({ subreddit: req.params.subreddit }).lean()
             .then(posts => {
-                res.render("posts-index", { posts });
+                res.render("posts-index", { posts, currentUser });
             })
             .catch(err => {
                 console.log(err);
