@@ -7,6 +7,8 @@ const expect = chai.expect;
 // Import the Post model from our models folder so we
 // we can use it in our tests.
 const Post = require('../models/post');
+const User = require('../models/user');
+
 const server = require('../server');
 
 chai.should();
@@ -14,13 +16,33 @@ chai.use(chaiHttp);
 
 const agent = chai.request.agent(server);
 
+const user = {
+    username: 'poststest',
+    password: 'testposts'
+};
+
+const newPost = {
+    title: 'post title',
+    url: 'https://www.google.com',
+    summary: 'post summary',
+    subreddit: 'funny'
+};
+
+before(function (done) {
+    agent
+        .post('/sign-up')
+        .set("content-type", "application/x-www-form-urlencoded")
+        .send(user)
+        .then(function (res) {
+            done();
+        })
+        .catch(function (err) {
+            done(err);
+        });
+});
+
 describe('Posts', function () {
     // Post that we'll use for testing purposes
-    const newPost = {
-        title: 'post title',
-        url: 'https://www.google.com',
-        summary: 'post summary'
-    };
     it('Should create with valid attributes at POST /posts/new', function (done) {
         // Checks how many posts there are now
         Post.estimatedDocumentCount()
@@ -58,6 +80,22 @@ describe('Posts', function () {
     });
 });
 
-after(function () {
-    agent.close()
+after(function (done) {
+    Post.findOneAndDelete(newPost)
+        .then(function (res) {
+            agent.close()
+
+            User.findOneAndDelete({
+                username: user.username
+            })
+                .then(function (res) {
+                    done()
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        })
+        .catch(function (err) {
+            done(err);
+        });
 });
