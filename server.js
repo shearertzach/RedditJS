@@ -16,7 +16,7 @@ const exphbs = require('express-handlebars')
 
 app.use(cookieParser());
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')

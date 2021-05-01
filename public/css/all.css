@@ -2,6 +2,55 @@
   margin-left: 20px;
 }
 
-.comments-main {
-  border: 1px solid black
+.postContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post {
+  flex-basis: 90%;
+}
+
+.vote {
+  flex-basis: 5%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+
+.voteForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 6px 6px 0;
+  display: inline-block;
+  padding: 3px;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.arrow:hover {
+  border-color: rgb(255, 136, 0);
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.voteScore {
+  margin: 0;
+  font-size: 1.25rem;
 }
